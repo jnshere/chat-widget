@@ -1,5 +1,11 @@
 (function () {
-  const renderEndpoint = "https://carrd-chatbot-backend.onrender.com/chat";
+  function ready(callback) {
+    if (document.readyState !== "loading") {
+      callback();
+    } else {
+      document.addEventListener("DOMContentLoaded", callback);
+    }
+  }
 
   function convertMarkdownLinksToHTML(text) {
     return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #007bff;">$1</a>');
@@ -7,6 +13,8 @@
 
   function addMessage(role, text) {
     const log = document.getElementById('chat-log');
+    if (!log) return;
+
     const wrapper = document.createElement('div');
     wrapper.style.display = 'flex';
     wrapper.style.marginBottom = '15px';
@@ -48,7 +56,7 @@
     addMessage('You', userMessage);
     input.value = '';
 
-    fetch(renderEndpoint, {
+    fetch("https://carrd-chatbot-backend.onrender.com/chat", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userMessage })
@@ -92,9 +100,6 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initChatUI);
-  } else {
-    initChatUI();
-  }
+  // 🚀 Run once the page is fully ready
+  ready(initChatUI);
 })();
