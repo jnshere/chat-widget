@@ -1,3 +1,5 @@
+console.log("✅ chatbot.js loaded and running");
+
 (function () {
   function ready(callback) {
     if (document.readyState !== "loading") {
